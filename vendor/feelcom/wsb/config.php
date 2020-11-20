@@ -3,9 +3,9 @@ namespace feelcom\wsb;
 
 // Definicja parametrów DB
 define("DB_HOST", "localhost:3307");
-define("DB_USER", "db_user");
-define("DB_PASS", "db_user_passwd");
-define("DB_NAME", "db_name");
+define("DB_USER", "derCawObd");
+define("DB_PASS", "2nblJfEXVkvGPKoJ");
+define("DB_NAME", "carobd_dev");
 
 
 // Definicja protokołu, adresu witryny
