@@ -9,7 +9,7 @@ define("DB_NAME", "carobd_dev");
 
 
 // Definicja protokołu, adresu witryny
-define("PROTOCOL", "https://");
+define("PROTOCOL", "http://");
 define("ROOT_DOMAIN", "dev.carobd.local/");
 define("ROOT_URL", PROTOCOL . ROOT_DOMAIN);
 
