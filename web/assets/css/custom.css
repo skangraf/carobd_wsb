@@ -51,7 +51,7 @@ a, a:hover, a:visited{
 .onas {
     height: 100vh;
     min-height: 850px;
-    background-image: url('../img/onas.png');
+    background-image: url('/assets/img/onas.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

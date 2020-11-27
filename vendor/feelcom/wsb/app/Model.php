@@ -1,18 +1,40 @@
 <?php
 namespace feelcom\wsb;
 
-use PDO;
+use \PDO;
+use \PDOException;
 
 abstract class Model
 {
     protected $dbh;
     protected $stmt;
 
-    public function __construct() {
-        $this->dbh = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS,[PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"]);
+    public function __construct($_dbh=NULL) {
+
+        // check is DB object exist, if not create it.
+        if (is_object($_dbh))
+        {
+            $this->dbh = $_dbh;
+        }
+        else
+        {
+            // try to create DB connection if fail return exception message
+            try {
+
+                $this->dbh = new PDO('mysql:host=127.0.0.1:3307;dbname='.DB_NAME,'root','',[PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"]);
+
+            } catch (PDOException $e) {
+                die ($e->getMessage());
+            }
+
+        }
+
     }
 
+
     public function query($query) {
+        var_dump($query);
+
         $this->stmt = $this->dbh->prepare($query);
     }
 
