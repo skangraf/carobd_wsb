@@ -13,6 +13,10 @@ define("PROTOCOL", "https://");
 define("ROOT_DOMAIN", "domain_name/");
 define("ROOT_URL", PROTOCOL . ROOT_DOMAIN);
 
+//definicja dni do kalendarza
+define("WEEKDAYS", array('Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'));
+define("WEEKDAYS_SHORT",array('PN','WT','ŚR','CZ','PT','SO','N'));
+
 // załadowanie plików aplikacji
 foreach (glob("../vendor/feelcom/wsb/app/*.php") as $filename) {
     include_once $filename;
