@@ -21,7 +21,7 @@ abstract class Model
             // try to create DB connection if fail return exception message
             try {
 
-                $this->dbh = new PDO('mysql:host=127.0.0.1:3307;dbname='.DB_NAME,'root','',[PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"]);
+                $this->dbh = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME,DB_USER,DB_PASS,[PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"]);
 
             } catch (PDOException $e) {
                 die ($e->getMessage());
@@ -33,7 +33,6 @@ abstract class Model
 
 
     public function query($query) {
-        var_dump($query);
 
         $this->stmt = $this->dbh->prepare($query);
     }

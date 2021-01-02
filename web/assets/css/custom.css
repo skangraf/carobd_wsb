@@ -692,6 +692,37 @@ footer {
     font-size: 1.3rem;
 }
 
+#calServiceName, #calServiceTotal
+{
+    width: 80%;
+    float: left;
+    border-right: 1px solid black;
+}
+
+#calServicePrice, #calServiceSum
+{
+    width: 20%;
+    float: left;
+    text-align: right;
+}
+
+#calServiceTotal, #calServiceSum
+{
+    border-top:1px solid black;
+    background: #cfffd2;
+    font-weight: bold;
+}
+
+.calModalData
+{
+    padding: 0.5rem;
+}
+
+.calModalData:nth-child(odd)
+{
+    background: #eaeaea;
+}
+
 
 @media (min-width: 1025px) and (max-width: 1199px) {
 

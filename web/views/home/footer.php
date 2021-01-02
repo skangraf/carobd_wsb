@@ -3,7 +3,7 @@
 <!-- FOOTER -->
 <footer class="footer mt-auto py-3">
     <div class="container">
-        <p>&copy; 2020 carobd.pl for K27@WSB</p>
+        <p>&copy; <?php echo date("Y");?> carobd.pl for K27@WSB</p>
         <!-- to top arrow start -->
         <a class="page-scroll" href="#top">
             <div class="to-top-arrow">
@@ -65,8 +65,7 @@
 
                     <div class="form-group">
                         <label for="carService">Rodzaj usługi:</label>
-                        <select class="form-control" name="carService" id="carService" required>
-                            <option value="">-</option>
+                        <select multiple class="form-control" name="carService" id="carService" required>
                         </select>
                     </div>
 
@@ -91,7 +90,8 @@
                     <input type="hidden" name="f_day" id="f_day" value="">
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                    <button type="submit" class="btn btn-warning">Zarezerwuj</button>
+                    <button id="sendReservation" type="submit" class="btn btn-warning submitForm">Zarezerwuj</button>
+                    <button id="calculate" type="submit" class="btn btn-success float-right submitForm">Podlicz koszty</button>
 
                 </form>
             </div>
@@ -189,6 +189,28 @@
                 </button>
             </div>
             <div class="modal-body" id="resMsg">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal display info of reservations costs-->
+<div class="modal fade" id="calModal" tabindex="-1" role="dialog" aria-labelledby="resModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="calHeader"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="calMsg">
+                <div id="calServiceName"></div>
+                <div id="calServicePrice"></div>
+                <div>
+                    <div id="calServiceTotal" class="calModalData">Razem</div>
+                    <div id="calServiceSum" class="calModalData"></div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+
+    var allowAjaxSend = true;
+
+
     $("#rezerwacje").on('click', '#previous_month', function () {
 
         let month = $(this).data('month');
@@ -63,6 +67,43 @@ $(document).ready(function () {
         getReservation(month, year);
 
     });
+
+    function getReservation(month,year){
+
+        if (allowAjaxSend)
+        {
+            $.ajax({
+                url: "/api",
+                type: 'POST',
+                data: 'action=getReservationUserAjax&month='+month+'&year='+year,
+                beforeSend: function(){
+                    allowAjaxSend = false;
+                },
+                complete: function(){
+                    allowAjaxSend = true;
+                },
+
+                success: function(msg){
+                    if(msg.length){
+                        let ret = JSON.parse(msg);
+                        console.log(ret['code']);
+
+                        if(ret['code'] === 0){
+                            $( '.rezerwacje-card' ).empty();
+                            var htmlString = ret['html'];
+                            $( '.rezerwacje-card' ).append( htmlString );
+                        }
+                        else{
+                            alert('Przepraszamy wystąpił błąd: \r \n '+ret['html']+' \r \n Prosimy przeładować stronę i spróbować ponownie ');
+                        }
+                    }
+                }
+
+            });
+        }
+
+    }
+
 
 })
 

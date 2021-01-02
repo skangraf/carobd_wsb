@@ -4,9 +4,6 @@ namespace feelcom\wsb;
 // display names of months in PL language
 setlocale(LC_TIME,'pl_PL.UTF8');
 
-
-use Exception;
-use \PDO;
 use \PDOException;
 
 
@@ -29,7 +26,7 @@ class Calendar extends Model{
     public $_todayM;
     public $_todayD;
 
-    function __construct($dbh=NULL,$month=NULL,$year=NULL) {
+    function __construct($month=NULL,$year=NULL,$dbh=NULL) {
 
         parent::__construct($dbh);
 
@@ -84,8 +81,7 @@ class Calendar extends Model{
         {
             $query = $pdo->prepare($sql);
             $query->execute();
-            $reservations = $query->fetchAll();
-            return $reservations;
+            return $query->fetchAll();
         }
         catch (PDOException $e)
         {
@@ -107,8 +103,8 @@ class Calendar extends Model{
         {
             $query = $pdo->prepare($sql);
             $query->execute();
-            $houres = $query->fetchAll();
-            return $houres;
+            return $query->fetchAll();
+
         }
         catch (PDOException $e)
         {

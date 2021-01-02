@@ -2,7 +2,8 @@
 
     $(document).ready(function () {
 
-        varallowAjaxSend = true;
+        let allowAjaxSend = true;
+        let formButtonFlag = 0;
 
         //Get cars models on car mark change
         $('#carMark').change(function(){
@@ -67,9 +68,9 @@
             $('#carModification option').not(':first').remove();
 
             let request = $.ajax({
-                url: "/ajax_req.php",
+                url: "/api",
                 method: "POST",
-                data: 'action=getMarkAjax&get_mark=1',
+                data: 'action=getMarkAjax',
                 dataType: "json"
             });
 
@@ -102,9 +103,9 @@
                 return false;
 
             let request = $.ajax({
-                url: "/ajax_req.php",
+                url: "/api",
                 method: "POST",
-                data: 'action=getModelAjax&get_model='+model,
+                data: 'action=getModelAjax&param='+model,
                 dataType: "json"
             });
 
@@ -134,9 +135,9 @@
                 return false;
 
             let request = $.ajax({
-                url: "/ajax_req.php",
+                url: "/api",
                 method: "POST",
-                data: 'action=getGenerationAjax&get_generation='+generation,
+                data: 'action=getGenerationAjax&param='+generation,
                 dataType: "json"
             });
 
@@ -165,9 +166,9 @@
                 return false;
 
             let request = $.ajax({
-                url: "/ajax_req.php",
+                url: "/api",
                 method: "POST",
-                data: 'action=getSerieAjax&get_serie='+serie,
+                data: 'action=getSerieAjax&param='+serie,
                 dataType: "json"
             });
 
@@ -195,9 +196,9 @@
                 return false;
 
             let request = $.ajax({
-                url: "/ajax_req.php",
+                url: "/api",
                 method: "POST",
-                data: 'action=getModificationAjax&get_modification='+modification,
+                data: 'action=getModificationAjax&param='+modification,
                 dataType: "json"
             });
 
@@ -220,9 +221,9 @@
             $('#carService option').not(':first').remove();
 
             let request = $.ajax({
-                url: "/ajax_req.php",
+                url: "/api",
                 method: "POST",
-                data: 'action=getServicesAjax&get_shr=1',
+                data: 'action=getServicesAjax',
                 dataType: "json"
             });
 
@@ -241,20 +242,41 @@
             });
         }
 
-        $("#reservationForm").submit(function(event){
+        $('.submitForm').click(function (){
 
-            event.preventDefault();
-            sendReservationForm();
+            console.log(this.id);
+            if(this.id === 'sendReservation') formButtonFlag = 1;
+            else if(this.id === 'calculate') formButtonFlag = 2;
+
+            if(this.id === 'sendReservation') {
+                $("#reservationForm").submit(function(event){
+                    event.preventDefault();
+                    sendReservationForm();
+                });
+            }
+            else if (this.id === 'calculate') {
+                $("#reservationForm").submit(function(event){
+                    event.preventDefault();
+                    calculateCosts();
+                });
+            }
         });
 
         function sendReservationForm(){
 
             if (allowAjaxSend)
             {
+
+                let chosenSrvs = $("#carService").val();
+                chosenSrvs = chosenSrvs.toString();
+                chosenSrvs = chosenSrvs.replace(/,/g,'|');
+                $("#carService").val(chosenSrvs);
+                console.log(chosenSrvs);
+
                 $.ajax({
-                    url: "/ajax_req.php",
+                    url: "/api",
                     type: 'POST',
-                    data: 'action=sendReservationFormAjax&'+$('form.reservationForm').serialize(),
+                    data: 'action=sendReservationFormAjax&carService='+chosenSrvs+'&'+$('form.reservationForm').serialize(),
                     beforeSend: function(){
                         allowAjaxSend = true;//false;
                     },
@@ -283,7 +305,81 @@
             }
         }
 
+        //calculate Costs
+        function calculateCosts()
+        {
+            if(formButtonFlag == 2){
+                if (allowAjaxSend)
+                {
+                    let chosenSrvs = $("#carService").val();
+                    chosenSrvs = chosenSrvs.toString();
+                    chosenSrvs = chosenSrvs.replace(/,/g,'|');
 
+                    $.ajax({
+                        url: "/api",
+                        type: 'POST',
+                        data: 'action=calculateCostsAjax&carService='+chosenSrvs,
+                        beforeSend: function(){
+                            allowAjaxSend = false;
+                        },
+                        complete: function(){
+                            allowAjaxSend = true;
+                        },
+                        success: function(msg){
+                            if(msg.length)
+                            {
+                                let ret = JSON.parse(msg);
+
+                                console.log(ret);
+
+
+
+                                let modalCalHeader = $("#carMark option:selected").html() + " " + $("#carModel option:selected").html() + " " + $("#carGeneration option:selected").html() + " " + $("#carSerie option:selected").html() + " " + $("#carModification option:selected").html();
+                                modalCalHeader = modalCalHeader.replace(/ -/g, " ");
+                                modalCalHeader = modalCalHeader.replace(/ null-null/g, " ");
+
+                                let modalCalServiceNames = '';
+                                let modalCalServicePrices = '';
+                                let calServiceSum = 0;
+
+                                $.each(ret, function(index, value) {
+                                    console.log(value);
+
+                                    $.each(value, function(index, value) {
+                                        console.log(value);
+                                        modalCalServiceNames += '<div class="calModalData">'+`${value['service']}`+'</div>';
+                                        modalCalServicePrices += '<div class="calModalData">'+`${value['price']}`+'zł</div>';
+                                        calServiceSum += parseFloat(`${value['price']}`);
+                                    });
+                                });
+
+                                calModal(modalCalHeader, modalCalServiceNames, modalCalServicePrices, calServiceSum);
+                            }
+                            else{
+                                infoModal('Przepraszamy wystąpił błąd: <br><br>'+ret['error']+' <br><br> Prosimy przeładować stronę i spróbować ponownie ');
+                            }
+                        }
+                    });
+                }
+                formButtonFlag = 0;
+            }
+        }
+
+        //MODAL
+        function calModal(header, names, prices, sum){
+
+            let h = header
+            sum = sum+="zł";
+            $('#calHeader').empty().append(h);
+            $('#calServiceName').empty().append(names);
+            $('#calServicePrice').empty().append(prices);
+            $('#calServiceSum').empty().append(sum);
+            $('#calModal').modal('show');
+        }
+
+        $(document).on('hidden.bs.modal', '.modal', function () {
+            $('.modal:visible').length && $(document.body).addClass('modal-open');
+        });
 
         $("#reservationModal").on("hidden.bs.modal", function(){
             $("#reservationModal form")[0].reset();
@@ -295,6 +391,159 @@
             $('#infoMsg').empty().append(msg);
             $('#infoModal').modal('show');
         }
+
+        $("#rezerwacje").on('click', '#check_reservations', function () {
+
+            $('#checkModal').modal('show');
+
+        });
+
+        $('#cusPhone').keyup(function(){
+
+            var v = $(this).val().replace(/\D/g, ''); // Remove non-numerics
+            v = v.replace(/(\d{3})(?=\d)/g, '$1-'); // Add dashes every 3th digit
+            $(this).val(v)
+        });
+
+
+
+        $("#checkForm").submit(function(event){
+            event.preventDefault();
+            getUserCode();
+        });
+
+
+        $("#checkFormCode").submit(function(event){
+
+            event.preventDefault();
+            checkReservation();
+        });
+
+        function getUserCode() {
+
+            let request = $.ajax({
+                url: "/api",
+                method: "POST",
+                data: 'action=getUserSMSCodeAjax&'+$('form.checkForm').serialize(),
+                dataType: "json"
+            });
+
+            request.done(function(data){
+
+                $('#checkModal').modal('hide');
+
+                let ret = JSON.parse(data);
+                console.log(ret);
+
+                if(ret['code']===0){
+                    let opt="";
+                    opt += '<div class="no_reservations">Brak wyników</div>';
+                    infoModal(opt);
+                }
+
+                if(ret['code']===1){
+                    $('input[name=phoneToCheck]').val(ret['phone']);
+                    $('#checkModalPhone').modal('show');
+                }
+
+            });
+
+            request.fail(function(jqXHR, textStatus){
+                alert('Przepraszamy wystąpił błąd: \r \n '+textStatus+' \r \n Prosimy przeładować stronę i spróbować ponownie ');
+            });
+
+
+        }
+
+        function checkReservation() {
+
+            let request = $.ajax({
+                url: "/api",
+                method: "POST",
+                data: 'action=checkReservationUserAjax&'+$('form.checkFormCode').serialize(),
+                dataType: "json"
+            });
+
+            request.done(function(data){
+
+                let opt="";
+
+                if(data.length >0) {
+
+                    opt += ' <div class="table-responsive-sm">\n' +
+                        '<table class="table thead-dark">\n' +
+                        '  <thead class="thead-dark">\n' +
+                        '    <tr>\n' +
+                        '      <th scope="col">lp.</th>\n' +
+                        '      <th scope="col">data</th>\n' +
+                        '      <th scope="col">godzina</th>\n' +
+                        '      <th scope="col">nr rej</th>\n' +
+                        '      <th scope="col">marka</th>\n' +
+                        '      <th scope="col">model</th>\n' +
+                        '      <th scope="col">usługa</th>\n' +
+                        '    </tr>\n' +
+                        '  </thead>\n' +
+                        '  <tbody>';
+
+                    for (let i = 0, max = data.length; i < max; i++) {
+                        let lp = i + 1;
+                        opt += '    <tr>\n' +
+                            '      <th scope="row">' + lp + '</th>\n' +
+                            '      <td>' + data[i].date + '</td>\n' +
+                            '      <td>' + data[i].houre + '</td>\n' +
+                            '      <td>' + data[i].carRegNo + '</td>\n' +
+                            '      <td>' + data[i].make + '</td>\n' +
+                            '      <td>' + data[i].model + '</td>\n' +
+                            '      <td>' + data[i].service + '</td>\n' +
+                            '    </tr>';
+                    }
+
+                    opt += '  </tbody>\n' +
+                        '</table>\n' +
+                        '</div>';
+                }
+                else
+                {
+                    opt += '<div class="no_reservations">Brak wyników</div>';
+                }
+
+                // $('#carService').append(opt);
+                $('#checkModalPhone').modal('hide');
+                infoModal(opt);
+            });
+
+            request.fail(function(jqXHR, textStatus){
+                alert('Przepraszamy wystąpił błąd: \r \n '+textStatus+' \r \n Prosimy przeładować stronę i spróbować ponownie ');
+            });
+        }
+
+        function infoModal(text){
+
+            let msg = text;
+            $('#checkModal').modal('hide');
+            $('#resMsg').empty().append(msg);
+            $('#resModal').modal('show');
+        }
+
+        $("#resModal").on("hidden.bs.modal", function(){
+            $("#resMsg").html("");
+        });
+
+        $("#checkModalPhone").on("hidden.bs.modal", function(){
+            $("#checkModalPhone form")[0].reset();
+        });
+
+        $("#checkModal").on("hidden.bs.modal", function(){
+            $("#checkModal form")[0].reset();
+        });
+
+
+        $('#custPhone').keyup(function(){
+
+            var v = $(this).val().replace(/\D/g, ''); // Remove non-numerics
+            v = v.replace(/(\d{3})(?=\d)/g, '$1-'); // Add dashes every 3th digit
+            $(this).val(v)
+        });
 
     })
 
