@@ -8,7 +8,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/views/panel/header.php');
 
 
 $users = (new User)->getUsers();
-//var_dump($users);
 
 ?>
 <!-- start of section uzytkownicy-->

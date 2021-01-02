@@ -1,5 +1,9 @@
 </div>
 
+<?php
+    include_once($_SERVER['DOCUMENT_ROOT'].'/views/calendar/modals.php');
+?>
+
 <!-- jQuery JS -->
 <script src="/assets/js/jquery-3.4.1.js"></script>
 
@@ -24,6 +28,9 @@
 
 <!-- panel module JS -->
 <script src="/assets/js/panel.js"></script>
+
+<!-- custom module JS -->
+<script src="/assets/js/calendar.js"></script>
 
 <?php
 

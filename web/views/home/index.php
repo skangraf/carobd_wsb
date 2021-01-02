@@ -72,7 +72,7 @@ include_once('header.php');
                 <div class="col-lg-12">
                     <div class="rezerwacje-card">
                         <?php
-                         echo $cal->userReservation();
+                         echo $cal->Index();
                         ?>
                     </div>
                 </div>

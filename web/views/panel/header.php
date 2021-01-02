@@ -1,5 +1,5 @@
 <?php
-
+//var_dump($_SERVER['REQUEST_URI']);
 use feelcom\wsb\Controller;
 use feelcom\wsb\UsersController;
 
@@ -18,6 +18,7 @@ if(!isset($_SESSION['is_logged_in'])){
     $dashbordClass = '';
 
     $kalendarz = '';
+    $kalendarzClass='';
 
     $rezerwacje = '';
 
@@ -28,7 +29,8 @@ if(!isset($_SESSION['is_logged_in'])){
     //set vars for active menu
     switch ($_SERVER['REQUEST_URI']) {
 
-        case '/panel/kalendarz':
+        case '/calendar/panel':
+            $kalendarzClass = 'active';
             $kalendarz = '<span class="sr-only">(current)</span>';
             break;
         case '/panel/rezerwacje':
@@ -57,6 +59,9 @@ if(!isset($_SESSION['is_logged_in'])){
 
 <!-- custom CSS panel -->
 <link href="/assets/css/custom_admin.css?v=0.0005" rel="stylesheet">
+
+<!-- custom CSS panel -->
+<link href="/assets/css/calendar.css?v=0.0005" rel="stylesheet">
 
 <!-- fonts CSS -->
 <link href="/assets/css/fonts.css" rel="stylesheet">
@@ -107,7 +112,7 @@ if(!isset($_SESSION['is_logged_in'])){
                     if (in_array('biuro',$userCan)){
                         echo '
                               <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link '.$kalendarzClass.'" href="/calendar/panel">
                                   <span data-feather="calendar"></span>
                                   Kalendarz'.$kalendarz.'
                                 </a>

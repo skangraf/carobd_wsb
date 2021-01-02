@@ -12,21 +12,26 @@ class CalendarController extends Controller{
 
     protected function Index(){
 
-        $this->returnView('index');
-    }
-
-    public function userReservation() {
-
         $model = new Calendar();
 
         if ($model) {
-            return $this->returnView('calendar',$model);
-            //return $this->userReservationAjax();
+            return $this->returnView('index',$model);
         }
         else {
             $this->redirect('users', 'register');
         }
+    }
 
+    protected function Panel(){
+
+        $model = new Calendar();
+
+        if ($model) {
+            return $this->returnView('panel',$model);
+        }
+        else {
+            $this->redirect('users', 'register');
+        }
     }
 
     public function userReservationAjax($month='',$year=''){
@@ -54,17 +59,27 @@ class CalendarController extends Controller{
 
         $monthName = strftime("%B", mktime(0, 0, 0, $model->_month, 1));
 
+        //define admin variable
+        $isAdmin = false;
 
-        //create object auth
-       // $auth = new Auth();
-        $isAdmin = false;//$auth->cookie_login();
+        //get user permission
+        $userCan = UsersController::userCan();
+
+        if(!empty($userCan)) {
+            //check is user is admin
+            if (in_array('admin', $userCan)) {
+
+                $isAdmin = true;
+
+            }
+        }
         $adminClass = "";
         $checkTitle = "Sprawdź rezerwację";
         if($isAdmin){
             $adminClass = "adm_check";
             $tmp = array();
             //get reservations for admin month from DB
-            $reservations = $model->getReservations($model->_month,$model->_year);
+            $reservations = $model->getReservationsAdm($model->_month,$model->_year);
 
             //change array key value to data_id - for get reservation details
             foreach ($reservations as $key => $value )
@@ -78,9 +93,6 @@ class CalendarController extends Controller{
             //get reservations for users month from DB
             $reservations = $model->getReservations($model->_month,$model->_year);
         }
-
-
-
 
         $html = "
 			<!-- data choice row -->
@@ -199,6 +211,7 @@ class CalendarController extends Controller{
                 // different style for today day.
                 if(!$isAdmin)
                 {
+
                     $html .= "<li class='kartka-today'>
 								<div class='reservation-date'>$cnt</div>
 								<div class='houre_row'>
@@ -211,6 +224,7 @@ class CalendarController extends Controller{
                 }
                 else // generate day reservation for admin
                 {
+
                     // style for other days.
                     $html .= "<li class='kartka-today' ><div class='reservation-date $adminClass' data-date='$reqDate'>$cnt</div>";
 
@@ -313,12 +327,24 @@ class CalendarController extends Controller{
 
     }
 
-    public function getHoures($id=NULL,$year=NULL,$month=NULL,$cnt=NULL,$reservations=array()) {
+    private function getHoures($id=NULL,$year=NULL,$month=NULL,$cnt=NULL,$reservations=array()) {
 
         // variable definitions
         $div = "";
         $workday  = "";
         $saturday = "";
+        $isAdmin = false;
+
+        //get user permission
+        $userCan = UsersController::userCan();
+
+        //check is user is admin
+        if(!empty($userCan)){
+            if(in_array('admin',$userCan)) {
+                $isAdmin = true;
+            }
+        }
+
 
         // Concat parts of date to string
         $reqDate= $year.'-'.$month.'-'.$cnt;
@@ -354,7 +380,7 @@ class CalendarController extends Controller{
 
 
         // if diff in days is grather than 0 then don't generate reservations
-        if ($diffInDays > 0)
+        if ($diffInDays > 0 && !$isAdmin)
         {
             $div ="<div class='houre_row'>
 						<div class='reservation-desc finished'>
@@ -379,6 +405,8 @@ class CalendarController extends Controller{
                     $class = "res_avail";
                     $class_desc = "";
                     $title = "Zarezerwuj";
+                    $admin_class = "";
+                    $admin_tooltip = "";
                     $resID = 0;
 
                     $divId = $res['id'].$cnt.$month.$year;
@@ -386,19 +414,33 @@ class CalendarController extends Controller{
                     if($reservations){
 
                         if(array_search($divId, array_column($reservations, 'date_id')) !== false) {
+
                             $class = "";
                             $class_desc = "finished";
-                            $title = "Niedostępne";
-
+                            if($isAdmin){
+                                $title = $reservations[$divId]['make'];
+                                $resID = $reservations[$divId]['reservation_id'];
+                                $admin_tooltip = "data-toggle='tooltip' title='".$reservations[$divId]['service']."'";
+                            }
+                            else
+                            {
+                                $title = "Niedostępne";
+                            }
 
                         }
                     }
 
 
+
+                    if($isAdmin){
+                        $admin_class = "get_details";
+
+                    }
+
                     // generate div for saturday
                     if ($i < 3) {
 
-                        $saturday .= "<div id='$divId' class='houre_row $class '  data-resid='$resID' data-date='$reqDate' data-year='$year' data-month='$month' data-day='$cnt' data-hid='$res[id]' data-hval='$res[op_houres]'>
+                        $saturday .= "<div id='$divId' class='houre_row $class $admin_class' $admin_tooltip data-resid='$resID' data-date='$reqDate' data-year='$year' data-month='$month' data-day='$cnt' data-hid='$res[id]' data-hval='$res[op_houres]'>
 									<div class='reservation-desc $class_desc'>
 										<div class='reservation-time'><i class='far fa-clock'></i> $res[op_houres]</div>
 										<div class='reservation-title'>$title</div>
@@ -409,8 +451,7 @@ class CalendarController extends Controller{
                     // generate div for work weekdays
                     $workday = $saturday;
 
-
-                    $workday .= "<div id='$divId' class='houre_row $class' data-date='$reqDate' data-year='$year' data-month='$month' data-day='$cnt' data-hid='$res[id]' data-hval='$res[op_houres]'>
+                    $workday .= "<div id='$divId' class='houre_row $class $admin_class'  $admin_tooltip data-resid='$resID' data-date='$reqDate' data-year='$year' data-month='$month' data-day='$cnt' data-hid='$res[id]' data-hval='$res[op_houres]'>
 									<div class='reservation-desc $class_desc'>
 										<div class='reservation-time'><i class='far fa-clock'></i> $res[op_houres]</div>
 										<div class='reservation-title'>$title</div>

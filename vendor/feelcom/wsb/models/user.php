@@ -299,7 +299,7 @@ class User extends Model{
 
     public function capabilities($uuid=''){
 
-        if($_SESSION['is_logged_in']){
+        if(isset($_SESSION['is_logged_in'])){
 
             $res = array();
 
