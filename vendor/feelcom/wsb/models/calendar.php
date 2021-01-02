@@ -73,8 +73,6 @@ class Calendar extends Model{
 
     public function getReservations($month=0,$year=0) {
 
-        var_dump($month,$year);
-
         $pdo= $this->dbh;
 
         $sql = "SELECT * FROM `reservations` WHERE `f_month` = '$month' AND `f_year` = '$year' AND `status`=1";
