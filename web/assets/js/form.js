@@ -278,7 +278,7 @@
                     type: 'POST',
                     data: 'action=sendReservationFormAjax&carService='+chosenSrvs+'&'+$('form.reservationForm').serialize(),
                     beforeSend: function(){
-                        allowAjaxSend = true;//false;
+                        allowAjaxSend = false;
                     },
                     complete: function(){
                         allowAjaxSend = true;

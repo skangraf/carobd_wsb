@@ -410,7 +410,7 @@ class CalendarController extends Controller{
                     $workday = $saturday;
 
 
-                    $workday .= "<div id='$divId' class='houre_row $class data-date='$reqDate' data-year='$year' data-month='$month' data-day='$cnt' data-hid='$res[id]' data-hval='$res[op_houres]'>
+                    $workday .= "<div id='$divId' class='houre_row $class' data-date='$reqDate' data-year='$year' data-month='$month' data-day='$cnt' data-hid='$res[id]' data-hval='$res[op_houres]'>
 									<div class='reservation-desc $class_desc'>
 										<div class='reservation-time'><i class='far fa-clock'></i> $res[op_houres]</div>
 										<div class='reservation-title'>$title</div>

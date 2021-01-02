@@ -224,10 +224,10 @@
 <script src="/assets/js/bootstrap.js"></script>
 
 <!-- custom JS -->
-<script src="/assets/js/custom.js"></script>
+<script src="/assets/js/custom.js?v=0.0210"></script>
 
 <!-- form JS-->
-<script src="/assets/js/form.js"></script>
+<script src="/assets/js/form.js?v=0.0210"></script>
 
 <!-- calendar JS-->
-<script src="/assets/js/calendar.js"></script>
+<script src="/assets/js/calendar.js?v=0.0210"></script>

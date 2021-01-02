@@ -12,6 +12,10 @@ a, a:hover, a:visited{
     color: #ffc107 !important;
 }
 
+#kontakt .row {
+    margin-right: 0;
+}
+
 
 
 .navbar-brand {
