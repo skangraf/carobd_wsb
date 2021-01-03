@@ -27,7 +27,7 @@
 <script src="/assets/js/jquery.redirect.js"></script>
 
 <!-- panel module JS -->
-<script src="/assets/js/panel.js?v=0.0025"></script>
+<script src="/assets/js/panel.js?v=0.0026"></script>
 
 <!-- custom_adm module JS -->
 <script src="/assets/js/custom_adm.js?v=0.0025"></script>

@@ -47,6 +47,44 @@ class CalendarController extends Controller{
         }
     }
 
+
+    protected function Edit(){
+
+        $model = new Calendar();
+
+        if ($model) {
+            return $this->returnView('edit',$model);
+        }
+        else {
+            $this->redirect('users', 'login');
+        }
+    }
+
+    protected function PrintDetails(){
+
+        $model = new Calendar();
+
+        if ($model) {
+            return $this->returnView('printDetails',$model);
+        }
+        else {
+            $this->redirect('users', 'login');
+        }
+    }
+
+    protected function ChangeStatus(){
+
+        $model = new Calendar();
+
+        if ($model) {
+            return $this->returnView('changeStatus',$model);
+        }
+        else {
+            $this->redirect('users', 'login');
+        }
+    }
+
+
     public function userReservationAjax($month='',$year=''){
 
         //check & adjust month & year variables

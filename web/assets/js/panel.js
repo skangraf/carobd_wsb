@@ -70,7 +70,7 @@ $(document).ready(function () {
         }
 
         if(action === 'rprint'){
-            $.redirect("/calendar/print",
+            $.redirect("/calendar/printDetails",
                 {
                     uuid: uuid,
                 },
