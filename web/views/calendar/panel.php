@@ -17,6 +17,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/views/panel/header.php');
         </div>
 
         <h2>Kalendarz</h2>
+        <div id="checkAdmReservations" class="btn btn-primary add-new-user-button">Sprawdź rezerwację</div>
 
         <div id="rezerwacje">
             <div class="container">

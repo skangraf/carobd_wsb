@@ -318,10 +318,14 @@ class CalendarController extends Controller{
             $html .= "</ul>";
         }
 
-        $html .= "
+
+        // don't display check reservation button for admin - admin has own function to check reservation without SMS code
+        if(!$isAdmin) {
+            $html .= "
 				<div class='bottom-tr'>
 					<div id='check_reservations'>$checkTitle</div>				
 				</div>";
+        }
 
         return $html;
 

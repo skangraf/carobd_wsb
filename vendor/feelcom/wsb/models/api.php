@@ -534,26 +534,48 @@ class Api extends Model{
         $code = $form['0'];
         $phone = $form['1'];
 
+        //define admin variable
+        $isAdmin = false;
 
-        if ($phone!='' && $code!=''){
+        //get user permission
+        $userCan = UsersController::userCan();
+
+        if(!empty($userCan)) {
+            //check is user is admin
+            if (in_array('admin', $userCan)) {
+
+                $isAdmin = true;
+
+            }
+        }
+
+
+        if (($phone!='' && $code!='') || ($phone!='' && $isAdmin)){
 
             $pdo= $this->dbh;
 
-            $sql = "SELECT * FROM `customers_code` WHERE sms_code ='".$code."' AND status ='1' AND  customer_id =(SELECT customer_id FROM customers WHERE cusPhone = '".$phone."')";
+            if($isAdmin){
 
-            try
-            {
-                $query = $pdo->prepare($sql);
-                $query->execute();
-                $res = $query->fetchAll();
+                $res=true;
 
             }
-            catch (PDOException $e)
-            {
-                die ($e->getMessage());
+            else{
+
+               $sql = "SELECT * FROM `customers_code` WHERE sms_code ='".$code."' AND status ='1' AND  customer_id =(SELECT customer_id FROM customers WHERE cusPhone = '".$phone."')";
+
+                try
+                {
+                    $query = $pdo->prepare($sql);
+                    $query->execute();
+                    $res = $query->fetchAll();
+
+                }
+                catch (PDOException $e)
+                {
+                    die ($e->getMessage());
+                }
+
             }
-
-
 
             if (!empty($res)){
 

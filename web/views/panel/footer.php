@@ -29,6 +29,9 @@
 <!-- panel module JS -->
 <script src="/assets/js/panel.js"></script>
 
+<!-- custom_adm module JS -->
+<script src="/assets/js/custom_adm.js"></script>
+
 <!-- custom module JS -->
 <script src="/assets/js/calendar.js"></script>
 

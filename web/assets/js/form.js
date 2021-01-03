@@ -408,8 +408,19 @@
 
 
         $("#checkForm").submit(function(event){
+
             event.preventDefault();
-            getUserCode();
+
+            if($(this).data('adm')==='68GAeNjbLByV2qAg'){
+
+                let phone = $('#custPhone').val();
+                $('input[name=phoneToCheck]').val(phone);
+                checkReservation();
+            }
+            else {
+               getUserCode();
+            }
+
         });
 
 
