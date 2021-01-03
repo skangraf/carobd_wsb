@@ -111,7 +111,7 @@ class Calendar extends Model{
         if($month==0 && $year ==0 && $uuid !='' && $isAdmin){
             $params = 'WHERE r.reservation_id ='.$uuid;
         }
-        elseif ($isAdmin){
+        elseif ($isAdmin && $month==0 && $year==0){
             $params = '';
         }
         else{
