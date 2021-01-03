@@ -34,7 +34,7 @@ if(!isset($_SESSION['is_logged_in'])){
             $kalendarzClass = 'active';
             $kalendarz = '<span class="sr-only">(current)</span>';
             break;
-        case '/panel/rezerwacje':
+        case '/calendar/reservations':
             $rezerwacjeClass = 'active';
             $rezerwacje = '<span class="sr-only">(current)</span>';
             break;

@@ -7,6 +7,7 @@
 
         //Get cars models on car mark change
         $('#carMark').change(function(){
+            console.log('dupa');
             getModel();
         });
 
@@ -56,7 +57,6 @@
 
             $('#reservationModal').modal('show');
 
-            //alert("w przygotowaniu :)"+ valHID +' '+valY+' '+valM+' '+valD);
         });
 
 
@@ -98,7 +98,7 @@
 
 
             let model = $('#carMark').val();
-
+console.log(model);
             if(model == '')
                 return false;
 
@@ -271,7 +271,6 @@
                 chosenSrvs = chosenSrvs.toString();
                 chosenSrvs = chosenSrvs.replace(/,/g,'|');
                 $("#carService").val(chosenSrvs);
-                console.log(chosenSrvs);
 
                 $.ajax({
                     url: "/api",

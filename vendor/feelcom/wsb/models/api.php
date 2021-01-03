@@ -177,6 +177,39 @@ class Api extends Model{
         }
 
     }
+
+    public function getGeneration($id=0) {
+
+        $val = (int)$id;
+        $out = array();
+        $sql = "SELECT * FROM `car_generation` WHERE `id_car_generation` = '$val'";
+
+        try
+        {
+            $this->query($sql);
+            $res = $this->resultSet();
+
+            foreach ($res as $row){
+
+                $out[] = array(
+                    'id' => $row['id_car_generation'],
+                    'name' => $row['name'],
+                    'year_begin' => $row['year_begin'],
+                    'year_end' => $row['year_end'],
+                    'date_create' => $row['date_create'],
+                    'date_update' => $row['date_update'],
+                );
+            }
+
+            return $out;
+        }
+        catch (PDOException $e)
+        {
+            die ($e->getMessage());
+        }
+
+    }
+
     public function getSerieAjax($id=0) {
 
         $val = (int)$id;
@@ -207,11 +240,71 @@ class Api extends Model{
 
     }
 
+    public function getSerie($id=0) {
+
+        $val = (int)$id;
+        $out = array();
+        $sql = "SELECT * FROM `car_serie` WHERE `id_car_serie` = '$val'";
+
+        try
+        {
+            $this->query($sql);
+            $res = $this->resultSet();
+
+            foreach ($res as $row){
+
+                $out[] = array(
+                    'id' => $row['id_car_serie'],
+                    'name' => $row['name'],
+                    'date_create' => $row['date_create'],
+                    'date_update' => $row['date_update'],
+                );
+            }
+
+            return $out;
+        }
+        catch (PDOException $e)
+        {
+            die ($e->getMessage());
+        }
+
+    }
+
     public function getModificationAjax($id=0) {
 
         $val = (int)$id;
         $out = array();
         $sql = "SELECT * FROM `car_trim` WHERE `id_car_serie` = '$val'";
+
+        try
+        {
+            $this->query($sql);
+            $res = $this->resultSet();
+
+            foreach ($res as $row){
+
+                $out[] = array(
+                    'id' => $row['id_car_trim'],
+                    'name' => $row['name'],
+                    'date_create' => $row['date_create'],
+                    'date_update' => $row['date_update'],
+                );
+            }
+
+            return $out;
+        }
+        catch (PDOException $e)
+        {
+            die ($e->getMessage());
+        }
+
+    }
+
+    public function getModification($id=0) {
+
+        $val = (int)$id;
+        $out = array();
+        $sql = "SELECT * FROM `car_trim` WHERE `id_car_trim` = '$val'";
 
         try
         {
@@ -662,6 +755,105 @@ class Api extends Model{
         {
             die ($e->getMessage());
         }
+
+    }
+
+
+    public function sendEditFormAjax($form=array()) {
+
+
+        // cerate array variables from string
+        $form = explode(',',$form);
+
+
+
+
+        //create car details array from form array
+        $carDetail['carMark'] = $form[1];
+        $carDetail['carModel'] = $form[2];
+        $carDetail['carGeneration'] = $form[3];
+        $carDetail['carSerie'] = $form[4];
+        $carDetail['carModification'] = $form[5];
+        $carDetail['carRegNo'] = strtoupper($form[6]);
+
+        // set 0 value if var is empty string
+        if($carDetail['carGeneration']==''){
+            $carDetail['carGeneration']=0;
+        }
+        if($carDetail['carSerie']==''){
+            $carDetail['carSerie']=0;
+        }
+        if($carDetail['carModification']==''){
+            $carDetail['carModification']=0;
+        }
+
+
+        //create customer details array from form array
+        $customerDetail['cusName'] = $form[7];
+        $customerDetail['cusPhone'] = $form[8];
+
+        //create reservation details array from form array
+        $reservationDetail['status'] = $form[9];
+        $reservationDetail['f_hid'] = $form[10];
+        $reservationDetail['f_year'] = $form[11];
+        $reservationDetail['f_month'] = $form[12];
+        $reservationDetail['f_day'] = $form[13];
+        $reservationDetail['carService'] = $form[0];
+
+        // reservation ID
+        $id = $form[14];
+
+        //create date_id for unique
+        $reservationDetail['date_id'] = $reservationDetail['f_hid'].$reservationDetail['f_day'].$reservationDetail['f_month'].$reservationDetail['f_year'];
+
+
+        $pdo= $this->dbh;
+        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+        try
+        {
+            //begin SQL transaction
+            $pdo->beginTransaction();
+
+            //insert customer details array to DB - update on duplicate phone
+            $sql = "UPDATE `customers` SET cusName=:cusName, cusPhone=:cusPhone WHERE customer_id=(SELECT cusId FROM reservations WHERE reservation_id='".$id."')";
+            $query = $pdo->prepare($sql);
+            $query->execute($customerDetail);
+
+
+            //insert cars details array to DB - update on duplicate carRegNo
+            $sql = "UPDATE `cars` SET `carMark`=:carMark,`carModel`=:carModel,`carGeneration`=:carGeneration,`carSerie`=:carSerie,`carModification`=:carModification, `carRegNo`=:carRegNo 
+                    WHERE `cars_id`=(SELECT carId FROM reservations WHERE reservation_id='".$id."')";
+            $query = $pdo->prepare($sql);
+            $query->execute($carDetail);
+
+
+            //insert reservations details array to DB - on duplicate date_id return error
+            $sql = "UPDATE `reservations` SET `status`=:status,`carService`=:carService,`f_hid`=:f_hid,`f_year`=:f_year,`f_month`=:f_month,`f_day`=:f_day,`date_id`=:date_id
+                    WHERE reservation_id='".$id."'";
+            $query = $pdo->prepare($sql);
+            $query->execute($reservationDetail);
+
+            //commit SQL transaction
+            $pdo->commit();
+
+            //return info
+            $res['code'] = 0;
+            $res['date_id'] = $reservationDetail['date_id'];
+            Messages::setMsg("Rezerwacja została zaktualizowana", "success");
+        }
+        catch (PDOException $e)
+        {
+            //rollBack SQL statments if transaction fail
+            $pdo->rollBack();
+
+            //return info
+            $res['code'] = 1;
+            $res['error'] = $e->getMessage();
+            Messages::setMsg("Błąd aktualizacji rezerwacji", "error");
+        }
+
+        return $res;
 
     }
 

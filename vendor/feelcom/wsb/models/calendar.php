@@ -118,8 +118,8 @@ class Calendar extends Model{
             $params = 'WHERE r.f_month = '.$month.' AND r.f_year='.$year.' AND r.`status`=1';
         }
 
-        $sql = "SELECT `reservation_id`,`date_id`,`f_year`,`f_month`,`f_day`,`cusPhone`,`carRegNo`,r.`carService` as `service`, h.`op_houres` as `houre`, 
-       			m.`name` as `make`,t.`name` as `model`, `status`
+        $sql = "SELECT `reservation_id`,`date_id`,`f_year`,`f_month`,`f_day`,`cusPhone`,`carRegNo`,r.`carService` as `service`,r.`carService` as `serviceList`, h.`id` as h_id,h.`op_houres` as `houre`, 
+       			m.`name` as `make`,t.`name` as `model`, `status`, a.`carMark`,a.`carModel`,a.`carGeneration`,a.`carSerie`,a.`carModification`, c.cusName
                 FROM `reservations` r 
                 JOIN `customers` c ON r.cusId = c.customer_id 
                 JOIN `cars` a ON r.carId = a.cars_id 

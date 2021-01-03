@@ -81,28 +81,6 @@
     </div>
 </div>
 
-<!-- Modal info  -->
-<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">&nbsp;</h5>  <!--  &nbsp for w3c validator error if empty - value is assigned by jQuery on open modal -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="infoMsg">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 <!-- Modal check phone of reservations -->
 <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
