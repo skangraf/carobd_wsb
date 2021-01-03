@@ -82,6 +82,8 @@ $serviceList = explode('|',$details['serviceList']);
 
 $data = sprintf("%02d-%02d-%04d", $details['f_day'], $details['f_month'], $details['f_year']);
 
+$costs = $api->calculateCostsAjax($details['serviceList']);
+
 ?>
     <!-- start of section reservation edit-->
 
@@ -91,7 +93,6 @@ $data = sprintf("%02d-%02d-%04d", $details['f_day'], $details['f_month'], $detai
             <?php Messages::display(); ?>
         </div>
         <h2><?php echo $data.' | '.$details['houre'] ?></h2>
-
 
         <form class="reservationEditForm" id="reservationEditForm">
             <div class="form-group">
@@ -203,8 +204,44 @@ $data = sprintf("%02d-%02d-%04d", $details['f_day'], $details['f_month'], $detai
             <button id="editReservation" type="submit" class="btn btn-primary submitFormEdit">Zapisz</button>
         </form>
     <div class="row">
-        <div class="col-8">
-            fdsfsdfsd
+        <div class="col-5 reservationCost table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nazwa usługi</th>
+                    <th scope="col">Cena</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+
+                        $i=0;
+                        $sum=0.00;
+                        foreach ($costs as $cost){
+                            $i++;
+                            echo "<tr>";
+                            echo "<td>".$i."</td>";
+                            echo "<td>".$cost[0]['service']."</td>";
+                            echo "<td>".$cost[0]['price']." zł</td>";
+                            echo "</tr>";
+
+                            $sum =  $sum + $cost[0]['price'];
+                        }
+
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr class="sumFooter">
+                        <td colspan="2" class="calculateSum">
+                            razem:
+                        </td>
+                        <td colspan="2">
+                            <?php echo number_format($sum,2); ?> zł
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 

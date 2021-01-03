@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_URI']=='/calendar/panel'){
 <script src="/assets/js/bootstrap.js"></script>
 
 <!-- form JS-->
-<script src="/assets/js/form.js?v=0.0025"></script>
+<script src="/assets/js/form.js?v=0.0038"></script>
 
 <!-- feather JS -->
 <script src="/assets/js/feather.min.js"></script>
@@ -49,18 +49,18 @@ if ($_SERVER['REQUEST_URI']=='/calendar/panel'){
 <script src="/assets/js/jquery.redirect.js"></script>
 
 <!-- panel module JS -->
-<script src="/assets/js/panel.js?v=0.0026"></script>
+<script src="/assets/js/panel.js?v=0.0038"></script>
 
 <!-- custom_adm module JS -->
-<script src="/assets/js/custom_adm.js?v=0.0025"></script>
+<script src="/assets/js/custom_adm.js?v=0.0038"></script>
 
 <!-- custom module JS -->
-<script src="/assets/js/calendar.js?v=0.0025"></script>
+<script src="/assets/js/calendar.js?v=0.0038"></script>
 
 <?php
 
 if ($_GET['action']== 'privileges' || $_GET['action']== 'editPrivileges'){
-    echo '<script src="/assets/js/privileges.js?v=0.0025"></script>';
+    echo '<script src="/assets/js/privileges.js?v=0.0038"></script>';
 }
 ?>
 <!-- datatables JS -->

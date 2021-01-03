@@ -60,10 +60,10 @@ if(!isset($_SESSION['is_logged_in'])){
 <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- custom CSS panel -->
-<link href="/assets/css/custom_admin.css?v=0.0025" rel="stylesheet">
+<link href="/assets/css/custom_admin.css?v=0.0038" rel="stylesheet">
 
 <!-- custom CSS panel -->
-<link href="/assets/css/calendar.css?v=0.0025" rel="stylesheet">
+<link href="/assets/css/calendar.css?v=0.0038" rel="stylesheet">
 
 <!-- fonts CSS -->
 <link href="/assets/css/fonts.css" rel="stylesheet">

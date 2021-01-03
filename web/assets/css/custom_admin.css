@@ -237,9 +237,21 @@ td.service, th.service {
     width: 100%;
     max-width: 400px;
     margin: auto;
+    margin-bottom: 100px;
+}
+
+.reservationCost {
+    margin: auto;
     margin-bottom: 200px;
 }
 
+.sumFooter {
+    font-weight: bold;
+}
+
+.calculateSum {
+    text-align: right;
+}
 
 @media (min-width: 768px) {
     .bd-placeholder-img-lg {
