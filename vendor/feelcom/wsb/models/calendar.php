@@ -213,6 +213,7 @@ class Calendar extends Model{
 
                 $this->editStatus($post['uuid'],$post['status']);
 
+                //set return messages
                 if($post['status']==1){
                     Messages::setMsg("Rezerwacja została aktywowana", "success");
                 }
