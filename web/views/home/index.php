@@ -132,7 +132,7 @@ include_once('header.php');
                             <li>
                                 <div class="media">
                                     <div class="kontakt-left"> <i class="fas fa-phone"></i> </div>
-                                    <div class="kontakt-right"> 0 700 225 052 </div>
+                                    <div class="kontakt-right"> 0 800 225 052 </div>
                                 </div>
                             </li>
                             <li>

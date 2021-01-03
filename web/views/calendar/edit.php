@@ -202,7 +202,11 @@ $data = sprintf("%02d-%02d-%04d", $details['f_day'], $details['f_month'], $detai
             <a href="/calendar/reservations"  class="btn btn-secondary">Anuluj</a>
             <button id="editReservation" type="submit" class="btn btn-primary submitFormEdit">Zapisz</button>
         </form>
-
+    <div class="row">
+        <div class="col-8">
+            fdsfsdfsd
+        </div>
+    </div>
 
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'].'/views/panel/footer.php');
