@@ -29,7 +29,7 @@ $users = (new User)->getUsers();
                         <th>Nazwisko</th>
                         <th>Nazwisko</th>
                         <th>E-mail</th>
-                        <th>Role</th>
+                        <th class="service">Role</th>
                         <th>Akcje</th>
                     </tr>
                     </thead>
@@ -64,7 +64,7 @@ $users = (new User)->getUsers();
                                     <td class='{$disabled}'>{$user['name']}</td>
                                     <td class='{$disabled}'>{$user['surname']}</td>
                                     <td class='{$disabled}'>{$user['email']}</td>
-                                    <td class='{$disabled}'>{$role}</td>
+                                    <td class='service {$disabled}'>{$role}</td>
                                     <td>
                                         <i class='fas fa-user-edit' data-toggle='tooltip' data-placement='bottom' data-uuid='{$user['uuid']}' data-action='uedit' title='edytuj'></i>   
                                         <i class='fas fa-users-cog' data-toggle='tooltip' data-placement='bottom' data-uuid='{$user['uuid']}' data-action='uperrmisions' title='uprawnienia'></i>

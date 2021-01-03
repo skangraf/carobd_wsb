@@ -8,7 +8,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/views/panel/header.php');
 
 
 ?>
-    <!-- start of section uzytkownicy-->
+    <!-- start of section kalendarz-->
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 panel-content">
 

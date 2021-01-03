@@ -102,8 +102,8 @@ class Calendar extends Model{
                 JOIN `services` s ON r.carService = s.id 
                 JOIN `houres` h ON r.f_hid = h.id 
                 JOIN `car_make` m ON a.carMark = m.id_car_make 
-                JOIN `car_model` t ON a.carModel = t.id_car_model 
-				WHERE r.f_month = '$month' AND r.f_year='$year' AND r.`status`=1";
+                JOIN `car_model` t ON a.carModel = t.id_car_model ";
+				//WHERE r.f_month = '$month' AND r.f_year='$year' AND r.`status`=1";
 
         try
         {

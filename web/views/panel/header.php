@@ -21,6 +21,7 @@ if(!isset($_SESSION['is_logged_in'])){
     $kalendarzClass='';
 
     $rezerwacje = '';
+    $rezerwacjeClass = '';
 
     $uzytkownicy = '';
     $uzytkownicyClass = '';
@@ -34,6 +35,7 @@ if(!isset($_SESSION['is_logged_in'])){
             $kalendarz = '<span class="sr-only">(current)</span>';
             break;
         case '/panel/rezerwacje':
+            $rezerwacjeClass = 'active';
             $rezerwacje = '<span class="sr-only">(current)</span>';
             break;
         case '/users/lists':
@@ -123,9 +125,9 @@ if(!isset($_SESSION['is_logged_in'])){
                     if (in_array('mechanik',$userCan)){
                         echo '
                               <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link '.$rezerwacjeClass.'" href="/calendar/reservations">
                                   <span data-feather="file"></span>
-                                  Rezerwacje
+                                  Rezerwacje'.$rezerwacje.'
                                 </a>
                               </li>
                         ';

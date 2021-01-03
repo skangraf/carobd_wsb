@@ -18,7 +18,7 @@ class CalendarController extends Controller{
             return $this->returnView('index',$model);
         }
         else {
-            $this->redirect('users', 'register');
+            $this->redirect('users', 'login');
         }
     }
 
@@ -30,7 +30,20 @@ class CalendarController extends Controller{
             return $this->returnView('panel',$model);
         }
         else {
-            $this->redirect('users', 'register');
+            $this->redirect('users', 'login');
+        }
+    }
+
+
+    protected function Reservations(){
+
+        $model = new Calendar();
+
+        if ($model) {
+            return $this->returnView('reservations',$model);
+        }
+        else {
+            $this->redirect('users', 'login');
         }
     }
 

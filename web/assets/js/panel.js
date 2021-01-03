@@ -47,6 +47,48 @@ $(document).ready(function () {
     });
 
 
+    $('#reservation-table').DataTable({
+        "scrollX": true,
+        "paging": false,
+        "language": {
+            "url": "/assets/js/Polish.json"
+        }
+    });
+
+    $("#reservation-table").on('click', '.fas', function () {
+
+        let uuid = $(this).data('uuid');
+        let action = $(this).data('action');
+        let status = $(this).data('status');
+
+        if(action === 'redit'){
+            $.redirect("/calendar/edit",
+                {
+                    uuid: uuid,
+                },
+                "POST");
+        }
+
+        if(action === 'rprint'){
+            $.redirect("/calendar/print",
+                {
+                    uuid: uuid,
+                },
+                "POST");
+        }
+
+        if(action === 'rban'){
+            $.redirect("/calendar/changeStatus",
+                {
+                    uuid: uuid,
+                    status: status,
+                },
+                "POST");
+        }
+
+    });
+
+
 })
 
 
