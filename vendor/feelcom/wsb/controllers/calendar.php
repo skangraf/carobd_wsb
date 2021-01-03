@@ -72,16 +72,33 @@ class CalendarController extends Controller{
         }
     }
 
-    protected function ChangeStatus(){
+    public function changeStatus() {
 
-        $model = new Calendar();
 
-        if ($model) {
-            return $this->returnView('changeStatus',$model);
+
+        if($_SESSION['is_logged_in'] && User::isAdmin()) {
+
+
+            $model = new Calendar();
+
+            if ($model->changeStatus()) {
+
+            }
+
+            $this->redirect('calendar', 'reservations');
+
         }
-        else {
-            $this->redirect('users', 'login');
+        else
+        {
+            $this->redirect('calendar', 'reservations');
         }
+    }
+
+
+    public static function getReservationDetail($uuid){
+
+        return (new Calendar)->getReservationsAdm(0, 0, $uuid);
+
     }
 
 
@@ -110,20 +127,9 @@ class CalendarController extends Controller{
 
         $monthName = strftime("%B", mktime(0, 0, 0, $model->_month, 1));
 
-        //define admin variable
-        $isAdmin = false;
+        //check is user is admin
+        $isAdmin = User::isAdmin();
 
-        //get user permission
-        $userCan = UsersController::userCan();
-
-        if(!empty($userCan)) {
-            //check is user is admin
-            if (in_array('admin', $userCan)) {
-
-                $isAdmin = true;
-
-            }
-        }
         $adminClass = "";
         $checkTitle = "Sprawdź rezerwację";
         if($isAdmin){
@@ -388,17 +394,7 @@ class CalendarController extends Controller{
         $div = "";
         $workday  = "";
         $saturday = "";
-        $isAdmin = false;
-
-        //get user permission
-        $userCan = UsersController::userCan();
-
-        //check is user is admin
-        if(!empty($userCan)){
-            if(in_array('admin',$userCan)) {
-                $isAdmin = true;
-            }
-        }
+        $isAdmin = User::isAdmin();
 
 
         // Concat parts of date to string

@@ -39,11 +39,21 @@ $reservations = (new Calendar)->getReservationsAdm();
             <?php
             $i=0;
             foreach ($reservations as $row){
+
                 $i++;
-                $disabled='';
-                $status='';
-                $title='anuluj';
                 $data = sprintf("%02d-%02d-%04d", $row['f_day'], $row['f_month'], $row['f_year']);
+
+                //define vars to cancel reservations
+                $disabled='';
+                $status='2';
+                $title='Anuluj Rezewację';
+
+                //define vars to activate reservations
+                if($row['status']!=1){
+                    $disabled='locked';
+                    $status=1;
+                    $title='Aktywuj Rezewację';
+                }
 
                 //display user details & actions row
                 echo "<tr>

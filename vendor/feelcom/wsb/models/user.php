@@ -397,6 +397,26 @@ class User extends Model{
 
     }
 
+    public static function isAdmin(){
+
+        //define admin variable
+        $isAdmin = false;
+
+        //get user permission
+        $userCan = UsersController::userCan();
+
+        if(!empty($userCan)) {
+            //check is user is admin
+            if (in_array('admin', $userCan)) {
+
+                $isAdmin = true;
+
+            }
+        }
+
+        return $isAdmin;
+    }
+
 
 
 }

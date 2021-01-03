@@ -91,19 +91,43 @@ class Calendar extends Model{
 
     }
 
-    public function getReservationsAdm($month=0,$year=0) {
+    /**
+     * @param int $month
+     * @param int $year
+     * @param string $uuid
+     * @return array
+     *
+     * if is given month and year return reservations in specified dates
+     * if is given uuid ana user is admin and not given month & year return details of reservation has uuid - id
+     * if there is not params and user is admin return all reservations form DB
+     *
+     */
+    public function getReservationsAdm($month=0, $year=0, $uuid='') {
 
         $pdo= $this->dbh;
 
+        $isAdmin = User::isAdmin();
+
+        if($month==0 && $year ==0 && $uuid !='' && $isAdmin){
+            $params = 'WHERE r.reservation_id ='.$uuid;
+        }
+        elseif ($isAdmin){
+            $params = '';
+        }
+        else{
+            $params = 'WHERE r.f_month = '.$month.' AND r.f_year='.$year.' AND r.`status`=1';
+        }
+
         $sql = "SELECT `reservation_id`,`date_id`,`f_year`,`f_month`,`f_day`,`cusPhone`,`carRegNo`,r.`carService` as `service`, h.`op_houres` as `houre`, 
-       			m.`name` as `make`,t.`name` as `model` FROM `reservations` r 
+       			m.`name` as `make`,t.`name` as `model`, `status`
+                FROM `reservations` r 
                 JOIN `customers` c ON r.cusId = c.customer_id 
                 JOIN `cars` a ON r.carId = a.cars_id 
                 JOIN `services` s ON r.carService = s.id 
                 JOIN `houres` h ON r.f_hid = h.id 
                 JOIN `car_make` m ON a.carMark = m.id_car_make 
-                JOIN `car_model` t ON a.carModel = t.id_car_model ";
-				//WHERE r.f_month = '$month' AND r.f_year='$year' AND r.`status`=1";
+                JOIN `car_model` t ON a.carModel = t.id_car_model ".$params;
+
 
         try
         {
@@ -176,5 +200,53 @@ class Calendar extends Model{
         }
 
     }
+
+    public function changeStatus(){
+
+        if($_SESSION['is_logged_in'] && User::isAdmin()) {
+
+            // Sanitize POST
+            $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+
+            if (isset($post['uuid']) && isset($post['status'])) {
+
+                $this->editStatus($post['uuid'],$post['status']);
+
+                if($post['status']==1){
+                    Messages::setMsg("Rezerwacja została aktywowana", "success");
+                }
+                else{
+                    Messages::setMsg("Rezerwacja została anulowana", "error");
+                }
+
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    private function editStatus($uuid = '', $status = ''){
+
+        if($uuid!='' && $status!=''){
+
+            $status= intval($status);
+
+            // Update MySQL row
+            $this->query("UPDATE reservations SET  status=:status WHERE reservation_id=:uuid");
+            $this->bind(':status', $status);
+            $this->bind(':uuid', $uuid);
+            $this->execute();
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 
 }
