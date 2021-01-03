@@ -14,7 +14,7 @@
 <script src="/assets/js/bootstrap.js"></script>
 
 <!-- form JS-->
-<script src="/assets/js/form.js"></script>
+<script src="/assets/js/form.js?v=0.0025"></script>
 
 <!-- feather JS -->
 <script src="/assets/js/feather.min.js"></script>
@@ -27,18 +27,18 @@
 <script src="/assets/js/jquery.redirect.js"></script>
 
 <!-- panel module JS -->
-<script src="/assets/js/panel.js"></script>
+<script src="/assets/js/panel.js?v=0.0025"></script>
 
 <!-- custom_adm module JS -->
-<script src="/assets/js/custom_adm.js"></script>
+<script src="/assets/js/custom_adm.js?v=0.0025"></script>
 
 <!-- custom module JS -->
-<script src="/assets/js/calendar.js"></script>
+<script src="/assets/js/calendar.js?v=0.0025"></script>
 
 <?php
 
 if ($_GET['action']== 'privileges' || $_GET['action']== 'editPrivileges'){
-    echo '<script src="/assets/js/privileges.js"></script>';
+    echo '<script src="/assets/js/privileges.js?v=0.0025"></script>';
 }
 ?>
 <!-- datatables JS -->
