@@ -252,8 +252,6 @@ class User extends Model{
 
             $status= intval($status);
 
-           //var_dump($uuid,$status);die;
-
             // Update MySQL row
             $this->query("UPDATE accounts SET  enabled=:status WHERE binuuid=UuidToBin(:uuid)");
             $this->bind(':status', $status);

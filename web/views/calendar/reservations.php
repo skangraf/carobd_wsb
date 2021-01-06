@@ -65,9 +65,9 @@ $reservations = (new Calendar)->getReservationsAdm();
                                     <td class='{$disabled}'>{$row['model']}</td>
                                     <td class='service {$disabled}'>{$row['service']}</td>
                                     <td>
-                                        <i class='fas fa-user-edit' data-toggle='tooltip' data-placement='bottom' data-uuid='{$row['reservation_id']}' data-action='redit' title='edytuj'></i>   
-                                        <i class='fas fa-print' data-toggle='tooltip' data-placement='bottom' data-uuid='{$row['reservation_id']}' data-action='rprint' title='drukuj'></i>
-                                        <i class='fas fa-ban' data-toggle='tooltip' data-placement='bottom' data-uuid='{$row['reservation_id']}' data-status='{$status}' data-action='rban' title='{$title}'></i>
+                                        <i class='fas fa-user-edit' data-toggle='tooltip' data-placement='bottom' data-uuid='{$row['uuid']}' data-action='redit' title='edytuj'></i>   
+                                        <i class='fas fa-print' data-toggle='tooltip' data-placement='bottom' data-uuid='{$row['uuid']}' data-action='rprint' title='drukuj'></i>
+                                        <i class='fas fa-ban' data-toggle='tooltip' data-placement='bottom' data-uuid='{$row['uuid']}' data-status='{$status}' data-action='rban' title='{$title}'></i>
                                     </td>
                                 </tr>";
 

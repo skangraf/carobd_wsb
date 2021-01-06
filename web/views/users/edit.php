@@ -36,7 +36,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/views/panel/header.php');
                 }
 
                 $userDetail =  UsersController::getUserDetail($uuid);
-                //var_dump($uuid,$_SESSION['user_data']['uuid'], $userDetail);
 
 
                 if($userDetail['enabled']==1){

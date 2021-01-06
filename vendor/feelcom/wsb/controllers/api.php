@@ -24,12 +24,6 @@ class ApiController extends Controller{
 
             $model = new Api();
 
-            // debuging ajax form options
-            if($method=='sendReservationFormAjax'){
-              //var_dump($post,$param);
-            }
-
-
             //chek is method exist
             if($model->actionExist($method)){
 

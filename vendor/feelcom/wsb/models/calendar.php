@@ -26,7 +26,13 @@ class Calendar extends Model{
     public $_todayM;
     public $_todayD;
 
-    function __construct($month=NULL,$year=NULL,$dbh=NULL) {
+    /**
+     * Calendar constructor.
+     * @param null $month
+     * @param null $year
+     * @param null $dbh
+     */
+    function __construct($month=NULL, $year=NULL, $dbh=NULL) {
 
         parent::__construct($dbh);
 
@@ -71,7 +77,12 @@ class Calendar extends Model{
 
     }
 
-    public function getReservations($month=0,$year=0) {
+    /**
+     * @param int $month
+     * @param int $year
+     * @return array
+     */
+    public function getReservations($month=0, $year=0) {
 
         $pdo= $this->dbh;
 
@@ -108,8 +119,8 @@ class Calendar extends Model{
 
         $isAdmin = User::isAdmin();
 
-        if($month==0 && $year ==0 && $uuid !='' && $isAdmin){
-            $params = 'WHERE r.reservation_id ='.$uuid;
+        if($month==0 && $year ==0 && $uuid !=''){
+            $params = "WHERE r.binuuid = UuidToBin('$uuid')";
         }
         elseif ($isAdmin && $month==0 && $year==0){
             $params = '';
@@ -118,7 +129,7 @@ class Calendar extends Model{
             $params = 'WHERE r.f_month = '.$month.' AND r.f_year='.$year.' AND r.`status`=1';
         }
 
-        $sql = "SELECT `reservation_id`,`date_id`,`f_year`,`f_month`,`f_day`,`cusPhone`,`carRegNo`,r.`carService` as `service`,r.`carService` as `serviceList`, h.`id` as h_id,h.`op_houres` as `houre`, 
+        $sql = "SELECT `reservation_id`, UuidFromBin(binuuid) as uuid,`date_id`,`f_year`,`f_month`,`f_day`,`cusPhone`,`carRegNo`,r.`carService` as `service`,r.`carService` as `serviceList`, h.`id` as h_id,h.`op_houres` as `houre`, 
        			m.`name` as `make`,t.`name` as `model`, `status`, a.`carMark`,a.`carModel`,a.`carGeneration`,a.`carSerie`,a.`carModification`, c.cusName
                 FROM `reservations` r 
                 JOIN `customers` c ON r.cusId = c.customer_id 
@@ -134,6 +145,7 @@ class Calendar extends Model{
             $query = $pdo->prepare($sql);
             $query->execute();
             $res = $query->fetchAll();
+
 
             $i=0;
             foreach ($res as $row){
@@ -180,7 +192,9 @@ class Calendar extends Model{
     }
 
 
-
+    /**
+     * @return array
+     */
     public function getHoures() {
 
         $pdo= $this->dbh;
@@ -201,6 +215,9 @@ class Calendar extends Model{
 
     }
 
+    /**
+     * @return bool
+     */
     public function changeStatus(){
 
         if($_SESSION['is_logged_in'] && User::isAdmin()) {
@@ -229,6 +246,11 @@ class Calendar extends Model{
         return false;
     }
 
+    /**
+     * @param string $uuid
+     * @param string $status
+     * @return bool
+     */
     private function editStatus($uuid = '', $status = ''){
 
         if($uuid!='' && $status!=''){
@@ -236,7 +258,7 @@ class Calendar extends Model{
             $status= intval($status);
 
             // Update MySQL row
-            $this->query("UPDATE reservations SET  status=:status WHERE reservation_id=:uuid");
+            $this->query("UPDATE reservations SET  status=:status WHERE binuuid=UuidToBin(:uuid)");
             $this->bind(':status', $status);
             $this->bind(':uuid', $uuid);
             $this->execute();
@@ -247,7 +269,30 @@ class Calendar extends Model{
         return false;
     }
 
+    public function getServiceDetails($id='') {
 
+        $pdo= $this->dbh;
 
+        $sql = "SELECT * FROM `services` WHERE `id` = '$id'";
+
+        try
+        {
+            $query = $pdo->prepare($sql);
+            $query->execute();
+            return $query->fetchAll();
+        }
+        catch (PDOException $e)
+        {
+            die ($e->getMessage());
+        }
+
+    }
+
+    public function getConfirmation($uuid){
+
+        $pdf= new Pdf();
+        $pdf->getPdfConfirmation($uuid);
+
+    }
 
 }

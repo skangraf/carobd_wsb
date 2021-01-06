@@ -39,6 +39,8 @@ class CalendarController extends Controller{
 
         $model = new Calendar();
 
+
+
         if ($model) {
             return $this->returnView('reservations',$model);
         }
@@ -63,12 +65,27 @@ class CalendarController extends Controller{
     protected function PrintDetails(){
 
         $model = new Calendar();
+        $isAdmin = User::isAdmin();
 
-        if ($model) {
+        if ($model && $isAdmin) {
             return $this->returnView('printDetails',$model);
         }
         else {
             $this->redirect('users', 'login');
+        }
+    }
+
+    protected function PrintConfirmation(){
+
+        $uuid = $this->request;
+        $uuid = str_replace("?","",$uuid);
+        $model = new Calendar();
+
+        if ($model) {
+            return $this->returnView('printConfirmation',$model->getConfirmation($uuid));
+        }
+        else {
+            $this->redirect('home', 'index');
         }
     }
 

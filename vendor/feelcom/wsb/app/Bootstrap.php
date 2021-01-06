@@ -59,7 +59,7 @@ class Bootstrap {
 
         $uriExploded = explode("?", $this->request);
 
-        if (count($uriExploded) < 2) {
+        if (count($uriExploded) <3) {
             $controllerUri = $this->request;
         }
         else {

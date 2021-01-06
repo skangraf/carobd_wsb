@@ -372,7 +372,6 @@ class Api extends Model{
         //create date_id for unique
         $reservationDetail['date_id'] = $reservationDetail['f_hid'].$reservationDetail['f_day'].$reservationDetail['f_month'].$reservationDetail['f_year'];
 
-
         $pdo= $this->dbh;
         $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
@@ -398,17 +397,27 @@ class Api extends Model{
             $reservationDetail['carId'] = $pdo->lastInsertId();
 
             //insert reservations details array to DB - on duplicate date_id return error
-            $sql = "INSERT INTO `reservations` (`cusId`,`carId`,`carService`,`f_hid`,`f_year`,`f_month`,`f_day`,`date_id`) 
-					VALUES (:cusId,:carId,:carService,:f_hid,:f_year,:f_month,:f_day,:date_id)";
+            $sql = "INSERT INTO `reservations` (`cusId`,`carId`,`carService`,`f_hid`,`f_year`,`f_month`,`f_day`,`date_id`,`binuuid`) 
+					VALUES (:cusId,:carId,:carService,:f_hid,:f_year,:f_month,:f_day,:date_id,UuidToBin(UUID()))";
             $query = $pdo->prepare($sql);
             $query->execute($reservationDetail);
+            $reservationId = $pdo->lastInsertId();
 
             //commit SQL transaction
             $pdo->commit();
 
+            $this->query("SELECT UuidFromBin(binuuid) as uuid  FROM reservations WHERE reservation_id=:resId");
+            $this->bind(':resId', $reservationId);
+            $res = $this->single();
+
+            $uuid = $res['uuid'];
+
+
+
             //return info
             $res['code'] = 0;
             $res['date_id'] = $reservationDetail['date_id'];
+            $res['uuid'] = $uuid;
         }
         catch (PDOException $e)
         {

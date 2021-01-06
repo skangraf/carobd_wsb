@@ -1,5 +1,5 @@
 <?php
-//var_dump($_SERVER['REQUEST_URI']);
+
 use feelcom\wsb\Controller;
 use feelcom\wsb\UsersController;
 

@@ -260,7 +260,9 @@ footer {
     opacity: 1;
 }
 
-
+#resMsg {
+    text-align: center;
+}
 
 @media (min-width: 1025px) and (max-width: 1199px) {
 

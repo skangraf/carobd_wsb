@@ -14,8 +14,6 @@ use feelcom\wsb\UsersController;
             </div>
 
            <?php
-          // var_dump($_POST);
-
 
                 if(in_array('admin',$userCan) && isset($_POST['uuid'])){
 

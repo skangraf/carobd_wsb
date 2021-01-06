@@ -7,7 +7,6 @@
 
         //Get cars models on car mark change
         $('#carMark').change(function(){
-            console.log('dupa');
             getModel();
         });
 
@@ -98,7 +97,7 @@
 
 
             let model = $('#carMark').val();
-console.log(model);
+
             if(model == '')
                 return false;
 
@@ -291,10 +290,10 @@ console.log(model);
                                 $('#'+ret['date_id']+' .reservation-desc').css('background-color','#95999c');
                                 $('#'+ret['date_id']+' .reservation-title').empty().append('zarezerwowane');
                                 $('#reservationModal').modal('hide');
-                                infoModal("Twoje zgłoszenie zostało zarejestrowane");
+                                infoModal('Twoje zgłoszenie zostało zarejestrowane<br><br><div id="getConfirmation" data-uuid="'+ret['uuid']+'" class="btn btn-primary">Pobierz potwierdzenie</div>');
                             }
                             else{
-                                infoModal('Przepraszamy wystąpił błąd: <br><br>'+ret['error']+' <br><br> Prosimy przeładować stronę i spróbować ponownie ');
+                                infoModal("Przepraszamy wystąpił błąd: <br><br>"+ret['error']+" <br><br> Prosimy przeładować stronę i spróbować ponownie ");
                                 $('#reservationModal').modal('hide');
                                 $("form")[0].reset();
                             }
@@ -553,6 +552,18 @@ console.log(model);
             var v = $(this).val().replace(/\D/g, ''); // Remove non-numerics
             v = v.replace(/(\d{3})(?=\d)/g, '$1-'); // Add dashes every 3th digit
             $(this).val(v)
+        });
+
+        //open reservation modal & get car mark
+        $("#resModal").on('click','#getConfirmation',function(){
+
+            //get data for reservation
+            let uuid = $("#getConfirmation").data('uuid');
+
+            console.log(uuid);
+
+            window.open('/calendar/printConfirmation/?'+uuid);
+
         });
 
     })
