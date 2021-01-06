@@ -26,7 +26,7 @@ $users = (new User)->getUsers();
                     <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Nazwisko</th>
+                        <th>Imię</th>
                         <th>Nazwisko</th>
                         <th>E-mail</th>
                         <th class="service">Role</th>
