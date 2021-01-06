@@ -2,7 +2,7 @@
 <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- custom CSS panel -->
-<link href="/assets/css/custom_admin.css?v=0.0005" rel="stylesheet">
+<link href="/assets/css/custom_admin.css?v=0.00885" rel="stylesheet">
 
 <!-- fonts CSS -->
 <link href="/assets/css/fonts.css" rel="stylesheet">

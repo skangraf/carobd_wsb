@@ -9,5 +9,5 @@
 <script src="/assets/js/bootstrap.js"></script>
 
 <!-- form JS-->
-<script src="/assets/js/form.js"></script>
+<script src="/assets/js/form.js?v=0.00885"></script>
 

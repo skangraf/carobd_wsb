@@ -28,7 +28,7 @@
 <script src="/assets/js/bootstrap.js"></script>
 
 <!-- form JS-->
-<script src="/assets/js/form.js?v=0.0210"></script>
+<script src="/assets/js/form.js?v=0.00885"></script>
 
 <!-- calendar JS-->
-<script src="/assets/js/calendar.js?v=0.0210"></script>
+<script src="/assets/js/calendar.js?v=0.00885"></script>

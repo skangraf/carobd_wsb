@@ -22,10 +22,10 @@ $cal = new \feelcom\wsb\CalendarController($month,$year);
 <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- custom CSS panel -->
-<link href="/assets/css/custom.css?v=0.0210" rel="stylesheet">
+<link href="/assets/css/custom.css?v=0.00885" rel="stylesheet">
 
 <!-- calendar CSS -->
-<link href="/assets/css/calendar.css?v=0.0210" rel="stylesheet">
+<link href="/assets/css/calendar.css?v=0.00885" rel="stylesheet">
 
 <!-- fonts CSS -->
 <link href="/assets/css/fonts.css" rel="stylesheet">
