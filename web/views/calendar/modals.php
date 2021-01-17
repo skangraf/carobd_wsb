@@ -120,7 +120,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="checkMsg">
+            <div class="modal-body" id="checkMsgCode">
                 <form class="checkFormCode" id="checkFormCode">
 
                     <div class="form-group">
@@ -159,7 +159,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="calHeader"></h5>
+                <h5 class="modal-title" id="calHeader">Propozycja cenowa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
