@@ -32,3 +32,6 @@
 
 <!-- calendar JS-->
 <script src="/assets/js/calendar.js?v=0.00885"></script>
+
+</body>
+</html>

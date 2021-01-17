@@ -66,3 +66,5 @@ if ($_GET['action']== 'privileges' || $_GET['action']== 'editPrivileges'){
 <!-- datatables JS -->
 <script type="text/javascript" src="/assets/js/datatables.min.js"></script>
 
+</body>
+</html>
